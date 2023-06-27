@@ -10,8 +10,6 @@ const Register = () => {
     password: "",
   });
 
-  const [err, setErr] = useState(null);
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,16 +17,7 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:8800/api/auth/register", inputs, {
-        withCredentials: true,
-        credentials: "include",
-      });
-      navigate("/login");
-    } catch (err) {
-      setErr(err.response.data);
-    }
+    navigate("/login");
   };
 
   return (
