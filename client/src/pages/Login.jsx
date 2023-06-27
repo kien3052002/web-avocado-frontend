@@ -20,14 +20,11 @@ const Login = () => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await login(inputs);
-      navigate("/");
-    } catch (err) {
-      setErr(err.response.data);
-    }
+    var data = { ...login(inputs) };
+    if (data.err == null) navigate(data.nav);
+    else setErr(data.err);
   };
 
   return (

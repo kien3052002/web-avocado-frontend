@@ -8,36 +8,33 @@ import {
 import axios from "axios";
 import Pagination from "../components/Pagination";
 import Carousel from "react-bootstrap/Carousel";
+import { posts } from "../data.js";
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
+  const [listPosts, setListPosts] = useState(posts);
   const [currPage, setCurrPage] = useState(0);
   const [search, setSearch] = useState("");
   const pageSize = 5;
-
   const filter = useLocation().search;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/posts${filter}`,
-          {
-            withCredentials: true,
-            credentials: "include",
-          }
-        );
-        setPosts(res.data);
-        setCurrPage(1);
-      } catch (err) {}
-    };
-    fetchData();
+    if (filter[1] == "c") {
+      setListPosts(posts.filter((post) => post.category === filter.slice(5)));
+    } else if (filter[1] == "s") {
+      setListPosts(
+        posts.filter(
+          (post) =>
+            post.title.toLowerCase().indexOf(filter.slice(3).toLowerCase()) > -1
+        )
+      );
+    }
+    setCurrPage(1);
   }, [filter]);
 
   const currPagePosts = useMemo(() => {
     const firstPageIndex = (currPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
-    return posts.slice(firstPageIndex, lastPageIndex);
+    return listPosts.slice(firstPageIndex, lastPageIndex);
   }, [currPage]);
 
   const getText = (html) => {
@@ -112,12 +109,6 @@ const Home = () => {
               <div className="content">
                 <h1 className="title">{post.title}</h1>
                 <h1 className="summary">{getText(post.summary)}</h1>
-                {/* <div className="reaction">
-                  <div>{post.like}</div>
-                  <div>
-                    <FontAwesomeIcon icon={faThumbsUp} />
-                  </div>
-                </div> */}
               </div>
               <div className="detail">
                 <div>
@@ -140,7 +131,7 @@ const Home = () => {
       <Pagination
         className="pagination-bar"
         currentPage={currPage}
-        totalCount={posts.length}
+        totalCount={listPosts.length}
         pageSize={pageSize}
         onPageChange={(page) => setCurrPage(page)}
       />

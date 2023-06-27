@@ -9,38 +9,20 @@ import axios from "axios";
 import Pagination from "../components/Pagination";
 import Carousel from "react-bootstrap/Carousel";
 import { AuthContext } from "../context/authContext";
+import { posts } from "../data.js";
 
 const MyPosts = () => {
-  const [posts, setPosts] = useState([]);
-  const [currPage, setCurrPage] = useState(0);
-  const pageSize = 5;
-
-  const filter = useLocation().search;
-
   const { currUser } = useContext(AuthContext);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/posts/myPosts`,
-          { params: { id: currUser.id } },
-          {
-            withCredentials: true,
-            credentials: "include",
-          }
-        );
-        setPosts(res.data);
-        setCurrPage(1);
-      } catch (err) {}
-    };
-    fetchData();
-  }, [filter]);
+  const [listPosts, setListPosts] = useState(
+    posts.filter((post) => post.uid === currUser.id)
+  );
+  const [currPage, setCurrPage] = useState(1);
+  const pageSize = 5;
 
   const currPagePosts = useMemo(() => {
     const firstPageIndex = (currPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
-    return posts.slice(firstPageIndex, lastPageIndex);
+    return listPosts.slice(firstPageIndex, lastPageIndex);
   }, [currPage]);
 
   const getText = (html) => {
@@ -78,7 +60,7 @@ const MyPosts = () => {
       <div className="username">
         <h1>{currUser.username}</h1>
         <hr></hr>
-        <h4>{posts.length} posts</h4>
+        <h4>{listPosts.length} posts</h4>
       </div>
       <div className="posts">
         {currPagePosts.map((post) => {
@@ -110,7 +92,7 @@ const MyPosts = () => {
       <Pagination
         className="pagination-bar"
         currentPage={currPage}
-        totalCount={posts.length}
+        totalCount={listPosts.length}
         pageSize={pageSize}
         onPageChange={(page) => setCurrPage(page)}
       />

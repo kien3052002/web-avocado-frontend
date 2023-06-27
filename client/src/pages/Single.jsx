@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
 import moment from "moment";
-import axios from "axios";
 import { AuthContext } from "../context/authContext.js";
 import {
   faPenToSquare,
@@ -11,74 +10,23 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { posts } from "../data.js";
 
-const Single = (props) => {
-  const [post, setPost] = useState([]);
+const Single = () => {
+  const id = useLocation().pathname.split("/")[2];
+  const [post, setPost] = useState(() => {
+    for (var i = 0; i < posts.length; i++) {
+      if (posts[i].id == id) return posts[i];
+    }
+  });
   const [react, setReact] = useState("");
   const [currReact, setCurrReact] = useState("");
   const initialRender = useRef(-1);
 
-  const id = useLocation().pathname.split("/")[2];
-
-  const navigate = useNavigate();
-
   const { currUser } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8800/api/posts/${id}`, {
-          withCredentials: true,
-          credentials: "include",
-        });
-        setPost(res.data);
-      } catch (err) {}
-
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/posts/reaction/${id}/${currUser.id}`,
-          {
-            withCredentials: true,
-            credentials: "include",
-          }
-        );
-        setReact(res.data);
-        setCurrReact(res.data);
-      } catch (err) {}
-    };
-    fetchData();
-  }, [id]);
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:8800/api/posts/${id}`, {
-        withCredentials: true,
-        credentials: "include",
-      });
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
     if (initialRender.current >= 1) {
-      const handleReact = async () => {
-        try {
-          await axios.post(
-            `http://localhost:8800/api/posts/react/${id}/${currUser.id}`,
-            {
-              reaction: react,
-              currReaction: currReact,
-            },
-            {
-              withCredentials: true,
-              credentials: "include",
-            }
-          );
-        } catch (err) {}
-      };
-      handleReact();
       setCurrReact(react);
     }
     if (initialRender.current < 1) {
@@ -89,7 +37,7 @@ const Single = (props) => {
   return (
     <div className="single">
       <div className="image">
-        <img src={`../uploads/${post.img}`} />
+        <img src={`../uploads/${post.img}`} alt="" />
       </div>
       <div className="container">
         <div className="content">
@@ -98,14 +46,14 @@ const Single = (props) => {
           </h1>
           <div className="user">
             <div className="info">
-              {currUser != null && currUser.username === post.username ? (
+              {currUser != null && currUser.id === post.uid ? (
                 <span>my post</span>
               ) : (
                 <p>by {<span>{post.username}</span>}</p>
               )}
               <p>Posted {moment(post.date).fromNow()}</p>
             </div>
-            {currUser != null && currUser.username === post.username && (
+            {currUser != null && currUser.id === post.uid && (
               <div>
                 <div className="edit">
                   <Link to={`/edit?id=${post.id}`} state={post}>
@@ -113,7 +61,7 @@ const Single = (props) => {
                       <FontAwesomeIcon icon={faPenToSquare} /> Edit
                     </button>
                   </Link>
-                  <Link onClick={handleDelete}>
+                  <Link to={"/"}>
                     <button id="delete">
                       <FontAwesomeIcon icon={faTrash} /> Delete
                     </button>

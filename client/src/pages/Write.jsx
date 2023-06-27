@@ -2,9 +2,7 @@ import React, { useContext, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import moment from "moment";
 import { AuthContext } from "../context/authContext";
 import Error from "./Error.jsx";
 
@@ -15,68 +13,13 @@ const Write = () => {
   const [content, setContent] = useState(state?.content || "");
   const [cat, setCat] = useState(state?.category || "");
   const [img, setImg] = useState(null);
-  const [status, setStatus] = useState(state?.status || "draft");
 
   const { currUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const imgUrl = await upload();
-    try {
-      state
-        ? await axios.put(
-            `http://localhost:8800/api/posts/${state.id}`,
-            {
-              title,
-              summary,
-              content,
-              cat,
-              img: img ? imgUrl : "",
-            },
-            {
-              withCredentials: true,
-              credentials: "include",
-            }
-          )
-        : await axios.post(
-            "http://localhost:8800/api/posts/",
-            {
-              title,
-              summary,
-              content,
-              cat,
-              img: img ? imgUrl : "../default-thumbnail.jpg",
-              date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-            },
-            {
-              withCredentials: true,
-              credentials: "include",
-            }
-          );
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const upload = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("img", img);
-      const res = await axios.post(
-        "http://localhost:8800/api/upload",
-        formData,
-        {
-          withCredentials: true,
-          credentials: "include",
-        }
-      );
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
+  const handleSubmit = () => {
+    navigate("/");
   };
 
   if (currUser == null) {

@@ -8,7 +8,6 @@ import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import MyPosts from "./pages/MyPosts";
 import "./style.scss";
-import bgimg from "./static/images/background.png";
 
 const router = createBrowserRouter([
   {
