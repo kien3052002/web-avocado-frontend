@@ -30,8 +30,24 @@ const router = createBrowserRouter([
       </>
     ),
   },
-  { path: "/register", element: <Register /> },
-  { path: "/login", element: <Login /> },
+  {
+    path: "/register",
+    element: (
+      <>
+        <NavigationBar />
+        <Register />
+      </>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <>
+        <NavigationBar />
+        <Login />
+      </>
+    ),
+  },
   {
     path: "/post/:id",
     element: (
