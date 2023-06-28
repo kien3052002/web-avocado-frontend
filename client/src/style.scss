@@ -101,6 +101,7 @@ $paleGreen: #dee8c2;
         z-index: 1;
         background-color: rgb(246, 241, 241);
         width: 1150px;
+        min-height: 753px;
         position: relative;
         border-right: 1px solid;
         border-left: 1px solid;
@@ -465,7 +466,7 @@ $paleGreen: #dee8c2;
                         .title {
                             text-decoration: none;
                             color: $darkGreen;
-                            font-size: 25px;
+                            font-size: 26.5px;
                             overflow: hidden;
                             display: -webkit-box;
                             -webkit-line-clamp: 2;
