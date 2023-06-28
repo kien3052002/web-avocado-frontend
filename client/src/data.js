@@ -14,6 +14,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 1,
+    username: "admin",
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 2,
+    username: "admin2",
   },
   {
     id: 3,
@@ -42,6 +44,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 1,
+    username: "admin",
   },
   {
     id: 4,
@@ -56,6 +59,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 2,
+    username: "admin2",
   },
   {
     id: 5,
@@ -70,6 +74,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 1,
+    username: "admin",
   },
   {
     id: 6,
@@ -84,6 +89,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 2,
+    username: "admin2",
   },
   {
     id: 7,
@@ -98,6 +104,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 2,
+    username: "admin2",
   },
   {
     id: 8,
@@ -112,6 +119,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 1,
+    username: "admin",
   },
   {
     id: 9,
@@ -126,6 +134,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 2,
+    username: "admin2",
   },
   {
     id: 10,
@@ -140,6 +149,7 @@ export const posts = [
     like: 0,
     dislike: 0,
     uid: 1,
+    username: "admin",
   },
 ];
 
