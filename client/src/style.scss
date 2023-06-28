@@ -90,6 +90,7 @@ $paleGreen: #dee8c2;
     display: flex;
     justify-content: center;
     background-color: $lightBrown;
+    min-height: 100vh;
 
     .background {
         position: fixed;
